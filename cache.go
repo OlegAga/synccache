@@ -178,10 +178,15 @@ func (c *Cache) Update(key string, value interface{}) error {
 	return nil
 }
 
-func (c *Cache) Remove(k string) error {
+func (c *Cache) Remove(key string) error {
 	c.Lock()
 	defer c.Unlock()
-	delete(c.items, k)
+	_, ok := c.items[key]
+	if !ok {
+		return errors.New("Cache have not for update key: " + key)
+	} else {
+		delete(c.items, key)
+	}
 	return nil
 }
 
